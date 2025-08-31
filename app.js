@@ -70,12 +70,14 @@ function updateExpensesTable() {
 document.getElementById('income-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const monthIdx = parseInt(document.getElementById('month').value, 10);
-    const online = parseFloat(document.getElementById('online-income').value) || 0;
-    const cash = parseFloat(document.getElementById('cash-income').value) || 0;
+    const onlineInput = document.getElementById('online-income');
+    const cashInput = document.getElementById('cash-income');
+    const online = parseFloat(onlineInput.value) || 0;
+    const cash = parseFloat(cashInput.value) || 0;
     getIncomeData()[monthIdx] = { online, cash };
     updateIncomeTable();
-    // Optionally, reset form
-    // this.reset();
+    onlineInput.value = '';
+    cashInput.value = '';
 });
 
 yearSelect.addEventListener('change', function() {
@@ -111,17 +113,20 @@ document.getElementById('expenses-form').addEventListener('submit', function(e) 
     e.preventDefault();
     const monthIdx = parseInt(document.getElementById('expense-month').value, 10);
     const date = document.getElementById('expense-date').value;
-    const shop = document.getElementById('shop-name').value.trim();
-    const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
+    const shopInput = document.getElementById('shop-name');
+    const amountInput = document.getElementById('expense-amount');
+    const shop = shopInput.value.trim();
+    const amount = parseFloat(amountInput.value) || 0;
     if (!shop || isNaN(monthIdx)) return;
     getExpensesData().push({ month: monthIdx, date, shop, amount });
     updateExpensesTable();
-    // Keep income table minimized if it was minimized before
     if (incomeTableMinimized) {
         incomeTable.classList.add('hidden');
     }
-    // Optionally, reset form
-    // this.reset();
+    shopInput.value = '';
+    amountInput.value = '';
+    document.getElementById('expense-date').value = '';
+    document.getElementById('expense-month').value = '';
 });
 
 // Download table as Excel (single file, two sheets)
