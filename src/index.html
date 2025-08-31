@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tracker</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            appearance: textfield;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 1rem;
+            width: 180px;
+        }
+        select, button {
+            padding: 8px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        label {
+            margin-right: 8px;
+        }
+        .form-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-center {
+            justify-content: center;
+        }
+        .income-table-container, .expenses-table-container {
+            margin-bottom: 32px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fafafa;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .download-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .minimize-btn {
+            float: right;
+            margin-right: 8px;
+            margin-top: 4px;
+            cursor: pointer;
+            background: #eee;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Income Tracker</h1>
+        <form id="income-form">
+            <div class="form-row">
+                <label for="year">Year:</label>
+                <select id="year" required>
+                    <!-- Years will be populated by JS -->
+                </select>
+                <label for="month">Month:</label>
+                <select id="month" required>
+                    <option value="" disabled selected>Select Month</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="online-income">Online Income:</label>
+                <input type="number" id="online-income" placeholder="Enter online income (numbers only)" min="0" step="any" required>
+                <label for="cash-income">Cash Income:</label>
+                <input type="number" id="cash-income" placeholder="Enter cash income (numbers only)" min="0" step="any" required>
+            </div>
+            <div class="form-row form-center">
+                <button type="submit" id="submit-income">Submit</button>
+            </div>
+        </form>
+        <div class="download-row">
+            <button id="download-excel">Download File</button>
+        </div>
+        <div class="income-table-container">
+            <button class="minimize-btn" id="toggle-income-table">_</button>
+            <h3 style="display:inline;">Monthly Income Table</h3>
+            <table id="income-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Online</th>
+                        <th>Cash</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be inserted by JS -->
+                </tbody>
+            </table>
+        </div>
+        <div class="expenses-table-container">
+            <button class="minimize-btn" id="toggle-expenses-table">_</button>
+            <h3 style="display:inline;">Add Monthly Expenses</h3>
+            <form id="expenses-form">
+                <div class="form-row">
+                    <label for="expense-month">Month:</label>
+                    <select id="expense-month" required>
+                        <option value="" disabled selected>Select Month</option>
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                    <label for="expense-date">Date:</label>
+                    <input type="date" id="expense-date" required>
+                    <label for="shop-name">Shop Name:</label>
+                    <input type="text" id="shop-name" placeholder="Enter shop name" required>
+                    <label for="expense-amount">Expense Amount:</label>
+                    <input type="number" id="expense-amount" placeholder="Enter expense amount" min="0" step="any" required>
+                </div>
+                <div class="form-row form-center">
+                    <button type="submit" id="submit-expense">Add Expense</button>
+                </div>
+            </form>
+            <table id="expenses-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Date</th>
+                        <th>Shop Name</th>
+                        <th>Expense Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Expense rows will be inserted by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="scripts/app.js"></script>
+</body>
+</html>
