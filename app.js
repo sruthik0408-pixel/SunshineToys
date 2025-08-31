@@ -5,12 +5,26 @@ const monthNames = [
     "July", "August", "September", "October", "November", "December"
 ];
 
+// Load from localStorage or initialize
+function loadData(key, defaultValue) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultValue;
+}
+function saveData(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
 // Data structure: { [year]: [{online, cash}, ...12 months] }
-const allIncomeData = {};
-const allExpensesData = {}; // { [year]: [ {month, date, shop, amount} ] }
+let allIncomeData = loadData('allIncomeData', {});
+let allExpensesData = loadData('allExpensesData', {});
+
 yearRange.forEach(year => {
-    allIncomeData[year] = Array.from({length: 12}, () => ({online: 0, cash: 0}));
-    allExpensesData[year] = [];
+    if (!allIncomeData[year]) {
+        allIncomeData[year] = Array.from({length: 12}, () => ({online: 0, cash: 0}));
+    }
+    if (!allExpensesData[year]) {
+        allExpensesData[year] = [];
+    }
 });
 
 let selectedYear = currentYear;
@@ -75,6 +89,7 @@ document.getElementById('income-form').addEventListener('submit', function(e) {
     const online = parseFloat(onlineInput.value) || 0;
     const cash = parseFloat(cashInput.value) || 0;
     getIncomeData()[monthIdx] = { online, cash };
+    saveData('allIncomeData', allIncomeData);
     updateIncomeTable();
     onlineInput.value = '';
     cashInput.value = '';
@@ -119,6 +134,7 @@ document.getElementById('expenses-form').addEventListener('submit', function(e) 
     const amount = parseFloat(amountInput.value) || 0;
     if (!shop || isNaN(monthIdx)) return;
     getExpensesData().push({ month: monthIdx, date, shop, amount });
+    saveData('allExpensesData', allExpensesData);
     updateExpensesTable();
     if (incomeTableMinimized) {
         incomeTable.classList.add('hidden');
