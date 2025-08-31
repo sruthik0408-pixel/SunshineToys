@@ -29,12 +29,15 @@ form {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-input[type="number"] {
-    width: calc(50% - 10px);
+input[type="number"], input[type="date"], input[type="text"], select {
     padding: 10px;
     margin: 10px 5px 20px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+input[type="number"], input[type="date"], input[type="text"] {
+    width: calc(50% - 10px);
 }
 
 button {
@@ -62,4 +65,57 @@ button:hover {
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-center {
+    justify-content: center;
+}
+
+.income-table-container, .expenses-table-container {
+    margin-bottom: 32px;
+}
+
+.download-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.minimize-btn {
+    float: right;
+    margin-right: 8px;
+    margin-top: 4px;
+    cursor: pointer;
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fafafa;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background: #f0f0f0;
 }
